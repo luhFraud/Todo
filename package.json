@@ -1,0 +1,26 @@
+{
+  "devDependencies": {
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "date-fns": "^3.6.0"
+  },
+  "name": "todo",
+  "description": "",
+  "version": "1.0.0",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spartid9/Todo.git"
+  },
+  "author": "Steven",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/spartid9/Todo/issues"
+  },
+  "homepage": "https://github.com/spartid9/Todo#readme"
+}
