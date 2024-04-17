@@ -21,4 +21,43 @@ export class todo {
     }
 
     //Functions for todo objects
+    getProjectByName(projectName) {
+        for(const project of this._projects){
+            if (project.name === projectName){
+                return project
+            }
+        }
+
+        return null;
+    }
+
+    contains(projectName) {
+        for(const project of this._projects){
+            if (project.name === projectName){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    addProject(newProject) {
+        if(!this.contains(projectName)) {
+            this._projects.push(newProject);
+            return true
+        } else {
+            return false;     
+        }
+    }
+
+    deleteProject(projectName) {
+        
+        const index = this._projects.findIndex(project => project.name === projectName);
+        
+        if (index !== -1) {
+            this._projects.splice(index, 1);
+            return true; 
+        }
+        return false;
+    }
 }
