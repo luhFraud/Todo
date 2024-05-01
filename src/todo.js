@@ -1,7 +1,7 @@
 import { Project } from "./project";
 import { Task } from "./task";
 
-export class todo {
+export class Todo {
 
     //Constructor
     constructor() {
@@ -42,14 +42,14 @@ export class todo {
     }
 
     addProject(newProject) {
-        if(!this.contains(projectName)) {
+        if (!this.contains(newProject.name)) {
             this._projects.push(newProject);
-            return true
+            return true;
         } else {
             return false;     
         }
     }
-
+    
     deleteProject(projectName) {
         
         const index = this._projects.findIndex(project => project.name === projectName);
