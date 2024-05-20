@@ -28,23 +28,44 @@ body {
     border-radius: 5px;
     border-bottom: 1px solid #1F1D1B;
     overflow: auto;
+    display: flex;
+    align-items: center;
 }
 
 #project-list {
     display: flex;
     flex-direction: row;
+    height: 100%;
 }
 
 .project {
     font-weight: 500;
     text-transform: capitalize;
     padding: 8px 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    display: flex; 
+    align-items: center; 
+    height: 100%;
+    cursor: pointer;
 }
 
 .active {
     color: #FCFAF6;
     background-color: #1F1D1B;
 }
+
+.project:hover {
+    color: #FCFAF6;
+    background-color: #1F1D1B;
+}
+
+.active:hover {
+    color: white;
+    background-color: black;
+}
+
 
 #header {
     display: flex;
@@ -69,6 +90,12 @@ body {
     background-color: #1F1D1B;
     border: 1px solid #FCFAF6;
     border-radius: 25px;
+    cursor: pointer;
+}
+
+#project-delete-btn:hover {
+    color: white;
+    background-color: black;
 }
 
 #list-screen {
@@ -89,6 +116,13 @@ body {
     border: 1px dashed #1F1D1B;
     border-radius: 10px;
     gap: 10px;
+    cursor: pointer;
+}
+
+#add-list-btn:hover {
+    color: #1F1D1B;
+    background-color: #FCFAF6;
+    border: 2px dashed #1F1D1B;
 }
 
 #add-list-btn p {
