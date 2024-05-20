@@ -35,4 +35,24 @@ export default class Storage {
         todo.getProjectByName(projectName).addTask(task)
         Storage.saveTodo(todo);
     }
+
+    static deleteTask(projectName, taskName) {
+        const todo = Storage.getTodo()
+        todo.getProjectByName(projectName).deleteTask(taskName)
+        Storage.saveTodo(todo)
+    }
+
+    static renameTask(projectName, taskName, newTaskName) {
+        const todo = Storage.getTodo()
+        todo.getProjectByName(projectName).getTaskByName(taskName).name = newTaskName
+        Storage.saveTodo(todo)
+    }
+
+    static setTaskDate(projectName, taskName, newDate) {
+        const todo = Storage.getTodo()
+        todo.getProjectByName(projectName).getTaskByName(taskName).date = newDate
+        Storage.saveTodo(todo)
+    }
+
+    
 }
