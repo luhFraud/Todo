@@ -1,4 +1,4 @@
-import { format, formatDate, isDate } from "date-fns";
+import { format, formatDate, isDate, parseISO } from "date-fns";
 
 export class Task {
 
@@ -6,7 +6,7 @@ export class Task {
     constructor(name, description, date, status = false) {
         this._name = name;
         this._description = description;
-        this._date = isDate(date) ? date : new Date();
+        this._date = this.parseDate(date)
         this._status = status
     }
 
@@ -37,15 +37,27 @@ export class Task {
     }
 
     set date(date) {
-        this._date = date;
+        this._date = this.parseDate(date)
     }
 
     set status(status) {
         this._status = status;
     }
 
+    parseDate(date) {
+        if(isDate(date)){
+            return date
+        } else {
+            try {
+                return parseISO(date);
+            } catch(error) {
+                return new Date();
+            }
+        }
+    }
+
     //Funcations for task objects
     getFormattedDate() {
-        return format(this._date, "yyyy-MM-dd");
+        return format(this._date, "MMM d, yyyy");
     }
 }
