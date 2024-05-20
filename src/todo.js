@@ -6,7 +6,6 @@ export class Todo {
     //Constructor
     constructor() {
         this._projects = [];
-        this._projects.push(new Project("Indox"));
         this._projects.push(new Project("Today"));
         this._projects.push(new Project("This Week"));
     }
