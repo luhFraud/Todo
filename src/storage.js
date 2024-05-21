@@ -54,5 +54,16 @@ export default class Storage {
         Storage.saveTodo(todo)
     }
 
+    static updateTodayProject() {
+        const todo = Storage.getTodo()
+        todo.updateTodayProject()
+        Storage.saveTodo(todo)
+    }
+
+    static updateWeekProject() {
+        const todo = Storage.getTodo()
+        todo.updateWeekProject()
+        Storage.saveTodo(todo)
+    }
     
 }
