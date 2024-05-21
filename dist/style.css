@@ -17,10 +17,41 @@ body {
     color: #1F1D1B;
 }
 
+#web-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
 #web-title {
     font-size: 45px;
     font-weight: 600;
     padding-left: 5px;
+}
+
+#add-project-btn {
+    width: 25%;
+    padding: 4px 8px;
+    color: #1F1D1B;
+    background-color: #FCFAF6;
+    border: 1px dashed #1F1D1B;
+    border-radius: 10px;
+    gap: 10px;
+    cursor: pointer;
+}
+
+#add-project-btn p {
+    padding: 2px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+#add-project-btn:hover {
+    color: #1F1D1B;
+    background-color: #FCFAF6;
+    border: 2px dashed #1F1D1B;
 }
 
 #project-bar {
@@ -105,10 +136,6 @@ body {
 }
 
 #add-list-btn {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
     width: 100%;
     padding: 4px 8px;
     color: #1F1D1B;
@@ -119,17 +146,17 @@ body {
     cursor: pointer;
 }
 
+
+#add-list-btn p {
+    padding: 4px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
 #add-list-btn:hover {
     color: #1F1D1B;
     background-color: #FCFAF6;
     border: 2px dashed #1F1D1B;
 }
 
-#add-list-btn p {
-    font-size: 16px;
-    font-weight: 500;
-}
 
-#add-list-btn svg {
-    width: 25px;
-}
