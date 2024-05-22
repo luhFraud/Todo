@@ -20,7 +20,12 @@
         </div>
         <div id="project-bar">
             <div id="project-list">
-                <div class="project active" id="today">
+                <div class="project active" id="inbox">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>inbox</title>
+                        <path d="M19,15H15A3,3 0 0,1 12,18A3,3 0 0,1 9,15H5V5H19M19,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z" />
+                    </svg>
+                </div>
+                <div class="project" id="today">
                     <p>Today</p>
                 </div>
                 <div class="project" id="this week">
@@ -29,7 +34,7 @@
             </div>
         </div>
         <div id="header">
-            <h3 id="header-title">Today</h3>
+            <h3 id="header-title">Inbox</h3>
             <button id="project-delete-btn">Delete</button>
         </div>
         <div id="list-screen">
@@ -41,10 +46,16 @@
         </div>
     </div>
     <div id="project-section" style="display: none;">
-        <div id="project-header">New Project</div>
-        <form id="new-project-form">
-
-        </form>
+        <div id="project-section-items">
+            <div id="project-header">New Project</div>
+            <form id="new-project-form">
+                <input type="text" id="project-name" name="project-name" placeholder="Project Title">
+                <div id="new-project-form-btns">
+                    <button type="submit" id="project-add-btn">Add</button>
+                    <button type="button" id="project-cancel-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>
