@@ -180,7 +180,6 @@ body {
     align-items: center;
     border-radius: 10px;
     background-color: #FCFAF6;
-    /*box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;*/
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
@@ -243,6 +242,111 @@ body {
 }
 
 #project-cancel-btn:hover {
+    background-color: #1F1D1B;
+    color: #FCFAF6;
+}
+
+/* Task Form */
+
+#task-section {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    z-index: 1;
+    width: 35%;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #1F1D1B;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #FCFAF6;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#task-section-items {
+    width: 80%;
+}
+
+#task-header {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 15px 0px 5px 0px;
+}
+
+#new-task-form-top {
+    display: flex;
+    flex-direction: row;
+}
+
+#new-task-form-top input{
+    display: flex;
+    align-items: center;
+    
+}
+
+#task-title {
+    flex: 70%;
+    margin-right: 5px;
+    height: 32px;
+    padding: 4px 6px;
+    border-radius: 5px;
+    border: 1px solid #1F1D1B;
+    outline: none;
+}
+
+#task-date {
+    flex: 30%;
+    height: 32px;
+    border-radius: 5px;
+    border: 1px solid #1F1D1B;
+    outline: none;
+}
+
+#task-description {
+    width: 100%;
+    margin: 5px 0px;
+    padding: 10px 10px;
+    font-size: 15px;
+    font-family: "Poppins";
+}
+
+#new-task-form-btns {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin: 0px 0px 25px 0px;
+    gap: 5px;
+}
+
+#new-task-form-btns button {
+    width: 100%;
+    font-size: 16px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #1F1D1B;
+}
+
+#task-add-btn {
+    background-color: #1F1D1B;
+    color: #FCFAF6;
+    cursor: pointer;
+}
+
+#task-cancel-btn {
+    background-color: #FCFAF6;
+    color: #1F1D1B;
+    cursor: pointer;
+}
+
+#task-add-btn:hover {
+    background-color: #FCFAF6;
+    color: #1F1D1B;
+}
+
+#task-cancel-btn:hover {
     background-color: #1F1D1B;
     color: #FCFAF6;
 }

@@ -39,6 +39,15 @@
         </div>
         <div id="list-screen">
             <div id="task-list">
+                <div class="task" id="task">
+                    <div id="task-left">
+                        <input type="checkbox" name="status" id="status" value="true">
+                        <p id="task-title-p">Task Title</p>
+                    </div>
+                    <div id="task-right">
+                        <p id="task-date-p">May 22, 2024</p>
+                    </div>
+                </div>
             </div>
             <button id="add-list-btn">
                 <p> + Add Task</p>
@@ -53,6 +62,22 @@
                 <div id="new-project-form-btns">
                     <button type="submit" id="project-add-btn">Add</button>
                     <button type="button" id="project-cancel-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="task-section" style="display: none;">
+        <div id="task-section-items">
+            <div id="task-header">New Task</div>
+            <form id="new-task-form">
+                <div id="new-task-form-top">
+                    <input type="text" id="task-title" name="task-title" placeholder="Task Title">
+                    <input type="date" id="task-date" name="task-date">
+                </div>
+                <textarea name="task-description" id="task-description" placeholder="Description..." rows="5"></textarea>
+                <div id="new-task-form-btns">
+                    <button type="submit" id="task-add-btn">Add</button>
+                    <button type="button" id="task-cancel-btn">Cancel</button>
                 </div>
             </form>
         </div>
