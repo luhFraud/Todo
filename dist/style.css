@@ -350,3 +350,76 @@ body {
     background-color: #1F1D1B;
     color: #FCFAF6;
 }
+
+/* task objects */
+
+.task {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #1F1D1B;
+    padding: 4px 8px;
+    border-radius: 10px;
+    margin: 10px 0px;
+}
+
+#task-left {
+    flex: 55%;
+    display: flex;
+    flex-direction: row;
+    padding: 2px 0px 0px 10px;
+    font-size: 16px;
+    font-weight: 500;
+    align-items: center;
+}
+
+#task-left p {
+    margin-left: 15px;
+}
+
+#task-right {
+    flex: 45%;
+    display: flex;
+    flex-direction: row;
+    padding: 2px;
+    font-size: 16px;
+    font-weight: 500;
+    align-items: center;
+    gap: 5px;
+}
+
+#task-right svg {
+    fill: #1F1D1B;
+    height: 24px;
+    cursor: pointer;
+}
+
+#task-right svg:hover {
+    fill: black;
+}
+
+#task-right-svgs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#task-right p {
+    margin-right: 15px;
+}
+
+#task-right button {
+    margin-right: 10px;
+    padding: 4px 8px;
+    color: #1F1D1B;
+    background-color: #FCFAF6;
+    border: 1px solid #1F1D1B;
+    border-radius: 4px;
+}
+
+#task-right button:hover {
+    cursor: pointer;
+    color: #FCFAF6;
+    background-color: #1F1D1B;
+    border: 1px solid #1F1D1B;
+}
+
