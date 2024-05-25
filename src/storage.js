@@ -8,14 +8,7 @@ export default class Storage {
     }
 
     static getTodo() {
-        const todoData = JSON.parse(localStorage.getItem("todo"));
-        const todo = new Todo();
-
-        if (todoData) {
-            todo.projects = todoData.projects.map(project => new Project(project.name));
-        }
-
-        return todo;
+        
     } 
 
     static addProject(project) {
