@@ -4,6 +4,6 @@ import { Todo } from "./todo";
 
 const todo = new Todo();
 
-console.log(todo.projects);
+console.log("i");
 
-//document.addEventListener("DOMContentLoaded", UI.loadPage)
+document.addEventListener("DOMContentLoaded", UI.loadPage)
