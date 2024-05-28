@@ -236,6 +236,13 @@ body {
     cursor: pointer;
 }
 
+#project-form-error{
+    color: #EF0307;
+    text-align: center;
+    margin-top: 5px;
+    text-transform: capitalize;
+}
+
 #project-cancel-btn {
     background-color: #FCFAF6;
     color: #1F1D1B;
@@ -255,7 +262,7 @@ body {
 /* Task Form */
 
 #task-section {
-    display: flex;
+    display: none;
     flex-direction: column;
     position: fixed;
     z-index: 1;
@@ -357,15 +364,27 @@ body {
     color: #FCFAF6;
 }
 
+#task-form-error {
+    color: #EF0307;
+    text-align: center;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+}
+
 /* task objects */
 
 .task {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     border: 1px solid #1F1D1B;
     padding: 4px 8px;
     border-radius: 10px;
     margin: 10px 0px;
+}
+
+#task-info {
+    display: flex;
+    flex-direction: row;
 }
 
 #task-left {
@@ -420,12 +439,40 @@ body {
     background-color: #FCFAF6;
     border: 1px solid #1F1D1B;
     border-radius: 4px;
+    cursor: pointer;
 }
 
+#task-right button.toggled {
+    color: #FCFAF6;
+    background-color: #1F1D1B;
+}
+
+/*
+#task-right button.toggled:hover {
+    color: #1F1D1B;
+    background-color: #FCFAF6;
+}
+*/
+
+/*
 #task-right button:hover {
     cursor: pointer;
     color: #FCFAF6;
     background-color: #1F1D1B;
     border: 1px solid #1F1D1B;
 }
+*/
 
+#task-description {
+    display: none;
+}
+
+#task-description div {
+    border: 1px solid #1F1D1B;
+    width: 100%;
+    margin-top: -10px;
+}
+
+#task-description p {
+    margin-top: 5px;
+}
