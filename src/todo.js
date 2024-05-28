@@ -7,9 +7,9 @@ export class Todo {
     //Constructor
     constructor() {
         this._projects = [];
-        this._projects.push(new Project("Inbox"));
-        this._projects.push(new Project("Today"));
-        this._projects.push(new Project("This Week"));
+        this._projects.push(new Project("inbox"));
+        this._projects.push(new Project("today"));
+        this._projects.push(new Project("this week"));
     }
 
     //Getters and Setters
@@ -74,7 +74,7 @@ export class Todo {
 
             todaysTasks.forEach((task) => {
                 const taskName = `${task.name} (${project.name})`;
-                this.getProjectByName("Today").addTask(new Task(taskName, tasl.description, task.date, task.status))
+                this.getProjectByName("Today").addTask(new Task(taskName, task.description, task.date, task.status))
             })
         })
     }
