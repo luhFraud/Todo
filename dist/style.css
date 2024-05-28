@@ -463,16 +463,20 @@ body {
 }
 */
 
-#task-description {
+#task-description-div {
     display: none;
 }
 
-#task-description div {
+#task-description-div div {
     border: 1px solid #1F1D1B;
     width: 100%;
-    margin-top: -10px;
+    margin-top: 10px;
 }
 
-#task-description p {
-    margin-top: 5px;
+#task-description-div p {
+    width: 100%;
+    margin: 0px 0px;
+    padding: 10px 5px;
+    font-size: 15px;
+    font-family: "Poppins";
 }
