@@ -58,6 +58,10 @@ export class Task {
 
     //Funcations for task objects
     getFormattedDate() {
-        return format(this._date, "MMM d, yyyy");
+        if(this._date === null) {
+            return 
+        } else {
+            return format(this._date, "MMM d, yyyy");
+        }
     }
 }
