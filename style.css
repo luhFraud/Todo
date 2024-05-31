@@ -131,7 +131,7 @@ body {
 }
 
 #header button {
-    display: none;
+    display: flex;
     font-size: 15px;
     margin-right: 5px;
     padding: 10px 15px;
@@ -160,6 +160,7 @@ body {
 }
 
 #add-list-btn {
+    display: none;
     width: 100%;
     padding: 4px 8px;
     color: #1F1D1B;
@@ -411,6 +412,11 @@ body {
 #task-left p {
     margin-left: 15px;
     text-transform: capitalize;
+}
+
+#task-title-p {
+    text-decoration: none;
+    color: rgba(31, 29, 27, 1);
 }
 
 #task-right {
