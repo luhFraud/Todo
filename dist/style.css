@@ -91,17 +91,28 @@ body {
 .project:hover {
     color: #FCFAF6;
     background-color: #1F1D1B;
+    fill: #FCFAF6;
 }
 
 .active:hover {
     color: white;
     background-color: black;
+    fill: white;
 }
 
-.active svg{
-    fill: #FCFAF6;
+.project svg{
+    fill: #1F1D1B;
     height: 24px;
 }
+
+.project.active svg {
+    fill: #FCFAF6;
+}
+
+.project:hover svg {
+    fill: #FCFAF6;
+}
+
 
 
 #header {
@@ -120,6 +131,7 @@ body {
 }
 
 #header button {
+    display: none;
     font-size: 15px;
     margin-right: 5px;
     padding: 10px 15px;
