@@ -22,12 +22,17 @@ export default class UI {
         })
     }
 
+    static loadProjectContent(projectName) {
+
+    }
+
     //EVENT LISTENR//
 
     static eventListeners() {
         UI.projectForm()
         UI.taskForm()
         UI.taskDescriptionToggle()
+        UI.activeProject()
     }
 
     static projectForm() {
@@ -154,6 +159,21 @@ export default class UI {
         });
     }
 
+    static activeProject() {
+        const projectList = document.getElementById("project-list");
+        projectList.addEventListener('click', function(e)  {
+            if(e.target && e.target.closest('.project')) {
+                const clickedProject = e.target.closest('.project');
+
+                document.querySelectorAll('.project').forEach((project) => {
+                    project.classList.remove('active')
+                })
+
+                clickedProject.classList.add('active')
+            }
+        })
+    }
+
     //CREATE FUNCTIONS//
 
     static createProject(projectName) {
@@ -162,6 +182,7 @@ export default class UI {
 
         let projectDiv = document.createElement('div');
         projectDiv.classList.add("project");
+        projectDiv.setAttribute("id", projectName)
 
         let projectTitle = document.createElement("p");
         projectTitle.innerHTML = projectName
