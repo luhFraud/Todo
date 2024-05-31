@@ -8,6 +8,7 @@ export default class UI {
     static loadPage() {
         UI.eventListeners()
         UI.generateProjects()
+        UI.loadProjectContent('inbox')
         //localStorage.clear()
         console.log(Storage.getTodo())
     }
@@ -23,6 +24,35 @@ export default class UI {
     }
 
     static loadProjectContent(projectName) {
+        const headerTitle = document.getElementById("header-title");
+
+        const projectDeleteBtn = document.getElementById("project-delete-btn");
+
+        const addListBtn = document.getElementById("add-list-btn");
+
+        const taskList = document.getElementById("task-list");
+
+        headerTitle.innerHTML = projectName
+
+        if(projectName === 'inbox' || projectName === 'today' || projectName === 'this week') {
+            projectDeleteBtn.style.display = 'none'
+        } else {
+            projectDeleteBtn.style.display = 'flex'
+        }
+
+        if(projectName === 'today' || projectName === 'this week') {
+            addListBtn.style.display = 'none'
+        } else {
+            addListBtn.style.display = 'flex'
+        }
+
+        taskList.innerHTML = '';
+
+        let tasks = Storage.getTodo().getProjectByName(projectName).list;
+
+        tasks.forEach((task) => {
+            this.createTask(task);
+        })
 
     }
 
@@ -32,6 +62,7 @@ export default class UI {
         UI.projectForm()
         UI.taskForm()
         UI.taskDescriptionToggle()
+        UI.checkedTask()
         UI.activeProject()
     }
 
@@ -132,9 +163,7 @@ export default class UI {
                 Storage.addTask(projectName, newTaskObj);
                 taskSection.style.display = 'none'
                 mainSection.style.filter = "blur(0px)"
-                taskNameInput.value = '';
-                taskDateInput.value = '';
-                taskDescriptionInput.value = '';
+                document.getElementById("new-task-form").reset();
                 taskFormError.innerHTML = ''
                 UI.createTask(newTaskObj);
             }
@@ -159,6 +188,23 @@ export default class UI {
         });
     }
 
+    static checkedTask() {
+        const taskList = document.getElementById('task-list');
+        taskList.addEventListener('click', (e) => {
+            if(e.target && e.target.tagName === 'INPUT' && e.target.type === 'checkbox') {
+                const taskDiv = e.target.closest('.task');
+                const pDiv = taskDiv.querySelector("#task-title-p")
+                if(pDiv.style.textDecoration === 'none' || !pDiv.style.textDecoration) {
+                    pDiv.style.textDecoration = "line-through";
+                    pDiv.style.color = "rgba(31, 29, 27, 0.2)"
+                } else {
+                    pDiv.style.textDecoration = "none";
+                    pDiv.style.color = "rgba(31, 29, 27, 1)"
+                }
+            }
+        })
+    }
+
     static activeProject() {
         const projectList = document.getElementById("project-list");
         projectList.addEventListener('click', function(e)  {
@@ -170,6 +216,8 @@ export default class UI {
                 })
 
                 clickedProject.classList.add('active')
+
+                UI.loadProjectContent(`${clickedProject.id}`)
             }
         })
     }
