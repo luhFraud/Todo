@@ -64,6 +64,7 @@ export default class UI {
         UI.taskDescriptionToggle()
         UI.checkedTask()
         UI.activeProject()
+        UI.deleteProject()
     }
 
     static projectForm() {
@@ -170,6 +171,54 @@ export default class UI {
        })
     }
 
+    static deleteProject() {
+        const projectDeleteSection = document.getElementById("project-delete-section");
+        const mainSection = document.getElementById("main");
+
+        const projectDeleteBtn = document.getElementById("project-delete-btn");
+        const projectDeleteNoBtn = document.getElementById("project-delete-no");
+        const projectDeleteYesBtn = document.getElementById("project-delete-yes");
+        const projectDeleteMsg = document.getElementById("project-delete-message");
+
+        projectDeleteBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const projectDiv = document.querySelector(".project.active");
+            const projectName = projectDiv.id;
+
+            projectDeleteSection.style.display = 'flex';
+            mainSection.style.filter = "blur(1px)";
+            projectDeleteMsg.innerHTML = `Do you want to delete project: ${projectName}?`;
+            console.log(projectDiv);
+            console.log(projectName);
+        });
+
+        projectDeleteNoBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            projectDeleteSection.style.display = 'none';
+            mainSection.style.filter = "blur(0px)";
+        });
+
+        projectDeleteYesBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const projectDiv = document.querySelector(".project.active");
+            const projectName = projectDiv.id;
+
+            Storage.deleteProject(projectName);
+
+            projectDiv.remove();
+
+            projectDeleteSection.style.display = 'none';
+            mainSection.style.filter = "blur(0px)";
+
+            const inboxProjectDiv = document.getElementById("inbox");
+            inboxProjectDiv.classList.add("active");
+
+
+            UI.loadProjectContent('inbox')
+            console.log(`Project ${projectName} deleted.`);
+        });
+    }
+
     static taskDescriptionToggle() {
         const taskList = document.getElementById('task-list');
         taskList.addEventListener('click', (e) => {
@@ -190,16 +239,21 @@ export default class UI {
 
     static checkedTask() {
         const taskList = document.getElementById('task-list');
+        const projectName = document.getElementById("header-title").innerHTML;
+
         taskList.addEventListener('click', (e) => {
             if(e.target && e.target.tagName === 'INPUT' && e.target.type === 'checkbox') {
                 const taskDiv = e.target.closest('.task');
                 const pDiv = taskDiv.querySelector("#task-title-p")
-                if(pDiv.style.textDecoration === 'none' || !pDiv.style.textDecoration) {
-                    pDiv.style.textDecoration = "line-through";
-                    pDiv.style.color = "rgba(31, 29, 27, 0.2)"
-                } else {
+                const taskName = pDiv.innerHTML;
+                if (!e.target.checked) {
                     pDiv.style.textDecoration = "none";
-                    pDiv.style.color = "rgba(31, 29, 27, 1)"
+                    pDiv.style.color = "rgba(31, 29, 27, 1)";
+                    Storage.setTaskStatus(projectName, taskName, false);
+                } else {
+                    pDiv.style.textDecoration = "line-through";
+                    pDiv.style.color = "rgba(31, 29, 27, 0.2)";
+                    Storage.setTaskStatus(projectName, taskName, true);
                 }
             }
         })
@@ -218,7 +272,8 @@ export default class UI {
                 clickedProject.classList.add('active')
 
                 UI.loadProjectContent(`${clickedProject.id}`)
-            }
+                console.log(`${clickedProject.id}`)
+            }   
         })
     }
 
@@ -256,11 +311,22 @@ export default class UI {
         taskLeftInput.setAttribute("type", "checkbox");
         taskLeftInput.setAttribute("name", "status");
         taskLeftInput.setAttribute("id", "status");
-        taskLeftInput.setAttribute("value", "true")
 
         const taskLeftP = document.createElement('p');
         taskLeftP.setAttribute("id", "task-title-p");
         taskLeftP.innerHTML = `${task.name}`;
+
+        if (task.status) {
+            taskLeftP.style.textDecoration = "line-through";
+            taskLeftP.style.color = "rgba(31, 29, 27, 0.2)";
+            taskLeftInput.checked = true;
+        } else {
+            taskLeftP.style.textDecoration = "none";
+            taskLeftP.style.color = "rgba(31, 29, 27, 1)";
+            taskLeftInput.checked = false;
+        }
+
+        console.log(task.status);
 
         const taskInfoRight = document.createElement('div');
         taskInfoRight.setAttribute("id", "task-right");
