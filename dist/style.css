@@ -159,6 +159,10 @@ body {
     overflow: auto;
 }
 
+#status {
+    accent-color: #1F1D1B;
+}
+
 #add-list-btn {
     display: none;
     width: 100%;
@@ -270,6 +274,81 @@ body {
 #project-cancel-btn:hover {
     background-color: #1F1D1B;
     color: #FCFAF6;
+}
+
+/* Project Delete Warning */
+#project-delete-section {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    z-index: 1;
+    width: 35%;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #1F1D1B;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #FCFAF6;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#project-delete-items {
+    width: 80%;
+    text-align: center;
+}
+
+#project-delete-warning {
+    font-size: 24px;
+    text-transform: capitalize;
+    font-weight: 600;
+    margin: 15px 0px 5px 0px;
+}
+
+#project-delete-message {
+    font-size: 16px;
+    text-transform: capitalize;
+    margin: 10px 0px 15px 0px;
+}
+
+#project-delete-yes {
+    background-color: #FCFAF6;
+    color: #1F1D1B;
+    cursor: pointer;
+}
+
+#project-delete-no {
+    background-color: #1F1D1B;
+    color: #FCFAF6;
+    cursor: pointer;
+}
+
+#project-delete-yes:hover {
+    background-color: #1F1D1B;
+    color: #FCFAF6;
+}
+
+#project-delete-no:hover {
+    background-color: #FCFAF6;
+    color: #1F1D1B;
+}
+
+#project-delete-section-btn {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0px 25px 0px;
+    gap: 5px;
+}
+
+#project-delete-section-btn button {
+    width: 100%;
+    font-size: 16px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #1F1D1B;
 }
 
 /* Task Form */
@@ -464,22 +543,6 @@ body {
     color: #FCFAF6;
     background-color: #1F1D1B;
 }
-
-/*
-#task-right button.toggled:hover {
-    color: #1F1D1B;
-    background-color: #FCFAF6;
-}
-*/
-
-/*
-#task-right button:hover {
-    cursor: pointer;
-    color: #FCFAF6;
-    background-color: #1F1D1B;
-    border: 1px solid #1F1D1B;
-}
-*/
 
 #task-description-div {
     display: none;
