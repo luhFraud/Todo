@@ -58,6 +58,12 @@ export default class Storage {
         Storage.saveTodo(todo)
     }
 
+    static setTaskStatus(projectName, taskName, newStatus) {
+        const todo = Storage.getTodo();
+        todo.getProjectByName(projectName).getTaskByName(taskName).status = newStatus;
+        Storage.saveTodo(todo);
+    }
+
     static updateTodayProject() {
         const todo = Storage.getTodo()
         todo.updateTodayProject()
