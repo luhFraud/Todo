@@ -110,7 +110,6 @@ export default class UI {
                 mainSection.style.filter = "blur(0px)"
                 projectNameInput.value = '';
                 projectFormError.innerHTML = ''
-                console.log(Storage.getTodo().projects)
             }
         })
 
@@ -150,7 +149,7 @@ export default class UI {
             let taskNameInput = document.getElementById("task-title");
             let taskName = taskNameInput.value.toLowerCase().trim();
 
-            let taskDateInput = document.getElementById("task-date")
+            let taskDateInput = document.getElementById("task-date-input")
             let taskDate = taskDateInput.value;
 
             let taskDescriptionInput = document.getElementById("task-description");
@@ -188,8 +187,6 @@ export default class UI {
             projectDeleteSection.style.display = 'flex';
             mainSection.style.filter = "blur(1px)";
             projectDeleteMsg.innerHTML = `Do you want to delete project: ${projectName}?`;
-            console.log(projectDiv);
-            console.log(projectName);
         });
 
         projectDeleteNoBtn.addEventListener('click', function(e) {
@@ -215,7 +212,6 @@ export default class UI {
 
 
             UI.loadProjectContent('inbox')
-            console.log(`Project ${projectName} deleted.`);
         });
     }
 
@@ -239,13 +235,14 @@ export default class UI {
 
     static checkedTask() {
         const taskList = document.getElementById('task-list');
-        const projectName = document.getElementById("header-title").innerHTML;
 
         taskList.addEventListener('click', (e) => {
             if(e.target && e.target.tagName === 'INPUT' && e.target.type === 'checkbox') {
                 const taskDiv = e.target.closest('.task');
                 const pDiv = taskDiv.querySelector("#task-title-p")
                 const taskName = pDiv.innerHTML;
+
+                const projectName = document.getElementById("header-title").innerHTML;
                 if (!e.target.checked) {
                     pDiv.style.textDecoration = "none";
                     pDiv.style.color = "rgba(31, 29, 27, 1)";
@@ -256,6 +253,7 @@ export default class UI {
                     Storage.setTaskStatus(projectName, taskName, true);
                 }
             }
+
         })
     }
 
@@ -272,7 +270,6 @@ export default class UI {
                 clickedProject.classList.add('active')
 
                 UI.loadProjectContent(`${clickedProject.id}`)
-                console.log(`${clickedProject.id}`)
             }   
         })
     }
@@ -326,7 +323,7 @@ export default class UI {
             taskLeftInput.checked = false;
         }
 
-        console.log(task.status);
+
 
         const taskInfoRight = document.createElement('div');
         taskInfoRight.setAttribute("id", "task-right");
