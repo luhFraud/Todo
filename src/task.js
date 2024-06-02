@@ -45,8 +45,10 @@ export class Task {
     }
 
     parseDate(date) {
-        if(isDate(date)){
-            return date
+        if (!date) { // Check if date is not provided
+            return new Date(); // Return current date if date is not provided
+        } else if (isDate(date)) {
+            return date;
         } else {
             try {
                 return parseISO(date);
