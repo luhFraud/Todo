@@ -400,7 +400,7 @@ body {
     outline: none;
 }
 
-#task-date {
+#task-date-input {
     flex: 30%;
     align-items: center;
     text-align: center;
@@ -491,6 +491,7 @@ body {
 #task-left p {
     margin-left: 15px;
     text-transform: capitalize;
+    overflow: hidden;
 }
 
 #task-title-p {
@@ -499,20 +500,20 @@ body {
 }
 
 #task-right {
-    flex: 45%;
+    flex: 45%; /* Make the right section grow and shrink as needed */
     display: flex;
-    flex-direction: row;
-    padding: 2px;
+    justify-content: flex-end; /* Align items to the right */
+    align-items: center; /* Align items vertically */
+    padding: 2px; /* Adjust padding as needed */
     font-size: 16px;
     font-weight: 500;
-    align-items: center;
-    gap: 5px;
 }
 
 #task-right svg {
     fill: #1F1D1B;
     height: 24px;
     cursor: pointer;
+    margin-left: 10px;
 }
 
 #task-right svg:hover {
@@ -529,8 +530,8 @@ body {
     margin-right: 15px;
 }
 
+
 #task-right button {
-    margin-right: 10px;
     padding: 4px 8px;
     color: #1F1D1B;
     background-color: #FCFAF6;
