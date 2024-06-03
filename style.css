@@ -557,8 +557,12 @@ body {
 
 #task-description-div p {
     width: 100%;
-    margin: 0px 0px;
     padding: 10px 5px;
     font-size: 15px;
     font-family: "Poppins";
+}
+
+.task-from-description {
+    text-transform: uppercase;
+    font-weight: bold;
 }
