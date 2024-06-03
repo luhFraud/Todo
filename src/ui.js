@@ -25,35 +25,47 @@ export default class UI {
 
     static loadProjectContent(projectName) {
         const headerTitle = document.getElementById("header-title");
-
         const projectDeleteBtn = document.getElementById("project-delete-btn");
-
         const addListBtn = document.getElementById("add-list-btn");
-
         const taskList = document.getElementById("task-list");
-
-        headerTitle.innerHTML = projectName
-
-        if(projectName === 'inbox' || projectName === 'today' || projectName === 'this week') {
-            projectDeleteBtn.style.display = 'none'
-        } else {
-            projectDeleteBtn.style.display = 'flex'
-        }
-
-        if(projectName === 'today' || projectName === 'this week') {
-            addListBtn.style.display = 'none'
-        } else {
-            addListBtn.style.display = 'flex'
-        }
-
+    
+        headerTitle.innerHTML = projectName;
         taskList.innerHTML = '';
-
+    
+        const settings = {
+            'inbox': {
+                projectDeleteBtn: 'none',
+                addListBtn: 'flex'
+            },
+            'today': {
+                projectDeleteBtn: 'none',
+                addListBtn: 'none',
+                updateProject: () => Storage.updateTodayProject()
+            },
+            'this week': {
+                projectDeleteBtn: 'none',
+                addListBtn: 'none',
+                updateProject: () => Storage.updateWeekProject()
+            },
+            'default': {
+                projectDeleteBtn: 'flex',
+                addListBtn: 'flex'
+            }
+        };
+    
+        const projectSettings = settings[projectName] || settings['default'];
+        projectDeleteBtn.style.display = projectSettings.projectDeleteBtn;
+        addListBtn.style.display = projectSettings.addListBtn;
+    
+        if (projectSettings.updateProject) {
+            projectSettings.updateProject();
+            console.log(Storage.getTodo());
+        }
+    
         let tasks = Storage.getTodo().getProjectByName(projectName).list;
-
         tasks.forEach((task) => {
             this.createTask(task);
-        })
-
+        });
     }
 
     //EVENT LISTENR//
@@ -293,26 +305,27 @@ export default class UI {
 
     static createTask(task) {
         const taskList = document.getElementById("task-list");
-
+        const projectName = document.getElementById("header-title").innerHTML;
+    
         const taskDiv = document.createElement('div');
-        taskDiv.classList.add('task')
-        taskDiv.setAttribute('id', `${task.name}`)
-
+        taskDiv.classList.add('task');
+        taskDiv.setAttribute('id', `${task.name}`);
+    
         const taskInfoDiv = document.createElement('div');
-        taskInfoDiv.setAttribute("id", "task-info")
-
+        taskInfoDiv.setAttribute("id", "task-info");
+    
         const taskInfoLeft = document.createElement('div');
         taskInfoLeft.setAttribute("id", "task-left");
-
+    
         const taskLeftInput = document.createElement("INPUT");
         taskLeftInput.setAttribute("type", "checkbox");
         taskLeftInput.setAttribute("name", "status");
         taskLeftInput.setAttribute("id", "status");
-
+    
         const taskLeftP = document.createElement('p');
         taskLeftP.setAttribute("id", "task-title-p");
         taskLeftP.innerHTML = `${task.name}`;
-
+    
         if (task.status) {
             taskLeftP.style.textDecoration = "line-through";
             taskLeftP.style.color = "rgba(31, 29, 27, 0.2)";
@@ -322,73 +335,86 @@ export default class UI {
             taskLeftP.style.color = "rgba(31, 29, 27, 1)";
             taskLeftInput.checked = false;
         }
-
-
-
+    
         const taskInfoRight = document.createElement('div');
         taskInfoRight.setAttribute("id", "task-right");
-
+    
         const taskRightDate = document.createElement("p");
-        taskRightDate.setAttribute("id","task-date");
+        taskRightDate.setAttribute("id", "task-date");
         taskRightDate.innerHTML = `${task.getFormattedDate()}`;
-
+    
         const taskRightBtn = document.createElement("BUTTON");
         taskRightBtn.setAttribute("type", "button");
-        taskRightBtn.innerHTML = "Details"
-
-        // Create the first SVG
-        const svgEdit = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svgEdit.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-        svgEdit.setAttribute("viewBox", "0 0 24 24");
-        const titleEdit = document.createElementNS("http://www.w3.org/2000/svg", "title");
-        titleEdit.textContent = "file-document-edit-outline";
-        const pathEdit = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        pathEdit.setAttribute("d", "M8,12H16V14H8V12M10,20H6V4H13V9H18V12.1L20,10.1V8L14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H10V20M8,18H12.1L13,17.1V16H8V18M20.2,13C20.3,13 20.5,13.1 20.6,13.2L21.9,14.5C22.1,14.7 22.1,15.1 21.9,15.3L20.9,16.3L18.8,14.2L19.8,13.2C19.9,13.1 20,13 20.2,13M20.2,16.9L14.1,23H12V20.9L18.1,14.8L20.2,16.9Z");
-        svgEdit.appendChild(titleEdit);
-        svgEdit.appendChild(pathEdit);
-
-        // Create the second SVG
-        const svgDelete = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svgDelete.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-        svgDelete.setAttribute("viewBox", "0 0 24 24");
-        const titleDelete = document.createElementNS("http://www.w3.org/2000/svg", "title");
-        titleDelete.textContent = "trash-can-outline";
-        const pathDelete = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        pathDelete.setAttribute("d", "M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z");
-        svgDelete.appendChild(titleDelete);
-        svgDelete.appendChild(pathDelete);
-
+        taskRightBtn.innerHTML = "Details";
+    
+        // Conditionally create SVGs if the project is not 'today' or 'this week'
+        let svgEdit, svgDelete;
+        if (projectName !== 'today' && projectName !== 'this week') {
+            // Create the first SVG
+            svgEdit = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svgEdit.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+            svgEdit.setAttribute("viewBox", "0 0 24 24");
+            const titleEdit = document.createElementNS("http://www.w3.org/2000/svg", "title");
+            titleEdit.textContent = "file-document-edit-outline";
+            const pathEdit = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            pathEdit.setAttribute("d", "M8,12H16V14H8V12M10,20H6V4H13V9H18V12.1L20,10.1V8L14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H10V20M8,18H12.1L13,17.1V16H8V18M20.2,13C20.3,13 20.5,13.1 20.6,13.2L21.9,14.5C22.1,14.7 22.1,15.1 21.9,15.3L20.9,16.3L18.8,14.2L19.8,13.2C19.9,13.1 20,13 20.2,13M20.2,16.9L14.1,23H12V20.9L18.1,14.8L20.2,16.9Z");
+            svgEdit.appendChild(titleEdit);
+            svgEdit.appendChild(pathEdit);
+    
+            // Create the second SVG
+            svgDelete = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svgDelete.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+            svgDelete.setAttribute("viewBox", "0 0 24 24");
+            const titleDelete = document.createElementNS("http://www.w3.org/2000/svg", "title");
+            titleDelete.textContent = "trash-can-outline";
+            const pathDelete = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            pathDelete.setAttribute("d", "M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z");
+            svgDelete.appendChild(titleDelete);
+            svgDelete.appendChild(pathDelete);
+        }
+    
         const taskDescriptionDiv = document.createElement("div");
         taskDescriptionDiv.setAttribute("id", "task-description-div");
-
+    
         const taskDescriptionBorder = document.createElement('div');
-
+    
         const taskDescriptionP = document.createElement("p");
-        taskDescriptionP.innerHTML = `${task.description}`
-
-        //Append to task left
+        const taskDescriptionFrom = document.createElement("p");
+        taskDescriptionFrom.classList.add('task-from-description');
+    
+        if (projectName === 'today' || projectName === 'this week') {
+            taskDescriptionFrom.innerHTML = `Task FROM ${task.project}`;
+            taskDescriptionP.innerHTML = `${task.description}`;
+        } else {
+            taskDescriptionP.innerHTML = `${task.description}`;
+        }
+    
+        // Append to task left
         taskInfoLeft.appendChild(taskLeftInput);
         taskInfoLeft.appendChild(taskLeftP);
-
-        //Append to task right
+    
+        // Append to task right
         taskInfoRight.appendChild(taskRightDate);
         taskInfoRight.appendChild(taskRightBtn);
-        taskInfoRight.appendChild(svgEdit);
-        taskInfoRight.appendChild(svgDelete);
-
-        //Append to task description
+        if (svgEdit) taskInfoRight.appendChild(svgEdit);
+        if (svgDelete) taskInfoRight.appendChild(svgDelete);
+    
+        // Append to task description
         taskDescriptionDiv.appendChild(taskDescriptionBorder);
+        taskDescriptionDiv.appendChild(taskDescriptionFrom);
         taskDescriptionDiv.appendChild(taskDescriptionP);
-
-        //Append to task info
+    
+        // Append to task info
         taskInfoDiv.appendChild(taskInfoLeft);
-        taskInfoDiv.appendChild(taskInfoRight)
-
-        //Append to task
+        taskInfoDiv.appendChild(taskInfoRight);
+    
+        // Append to task
         taskDiv.appendChild(taskInfoDiv);
         taskDiv.appendChild(taskDescriptionDiv);
-
-        //Append to task list
+    
+        // Append to task list
         taskList.appendChild(taskDiv);
     }
+    
+    
 }
