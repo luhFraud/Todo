@@ -77,6 +77,7 @@ export default class UI {
         UI.checkedTask()
         UI.activeProject()
         UI.deleteProject()
+        UI.deleteTask()
     }
 
     static projectForm() {
@@ -227,6 +228,66 @@ export default class UI {
         });
     }
 
+    static deleteTask() {
+        const taskList = document.getElementById('task-list');
+    
+        const taskDeleteSection = document.getElementById("task-delete-section");
+        const mainSection = document.getElementById("main");
+    
+        const taskDeleteNoBtn = document.getElementById("task-delete-no");
+        const taskDeleteYesBtn = document.getElementById("task-delete-yes");
+        const taskDeleteMsg = document.getElementById("task-delete-message");
+    
+        let taskToDelete = null;
+        let projectName = null;
+    
+        taskList.addEventListener('click', (e) => {
+            const target = e.target;
+            const svgTrashIcon = target.closest('#svg-trash-icon');
+            if (svgTrashIcon) {
+                const taskDiv = svgTrashIcon.closest('.task'); 
+                const pDiv = taskDiv.querySelector("#task-title-p");
+                const taskName = pDiv.innerHTML;
+                projectName = document.getElementById("header-title").innerHTML;
+    
+                taskToDelete = Storage.getTodo().getProjectByName(projectName).getTaskByName(taskName);
+    
+                if (taskToDelete.status) {
+                    taskDiv.remove();
+                    Storage.deleteTask(projectName, taskToDelete.name);
+                } else {
+                    taskDeleteMsg.innerHTML = `You want to delete ${taskToDelete.name} from ${projectName}?`
+                    taskDeleteSection.style.display = 'flex';
+                    mainSection.style.filter = "blur(1px)";
+                }
+            }
+        });
+    
+        taskDeleteYesBtn.addEventListener('click', () => {
+            if (taskToDelete) {
+                const taskDiv = document.getElementById(taskToDelete.name); 
+                taskDiv.remove();
+                Storage.deleteTask(projectName, taskToDelete.name);
+    
+                taskToDelete = null;
+                projectName = null;
+    
+                taskDeleteSection.style.display = 'none';
+                mainSection.style.filter = "none";
+            }
+        });
+    
+        taskDeleteNoBtn.addEventListener('click', () => {
+            taskToDelete = null;
+            projectName = null;
+    
+            taskDeleteSection.style.display = 'none';
+            mainSection.style.filter = "none";
+        });
+    }
+    
+    
+
     static taskDescriptionToggle() {
         const taskList = document.getElementById('task-list');
         taskList.addEventListener('click', (e) => {
@@ -247,27 +308,33 @@ export default class UI {
 
     static checkedTask() {
         const taskList = document.getElementById('task-list');
-
+    
         taskList.addEventListener('click', (e) => {
-            if(e.target && e.target.tagName === 'INPUT' && e.target.type === 'checkbox') {
+            if (e.target && e.target.tagName === 'INPUT' && e.target.type === 'checkbox') {
                 const taskDiv = e.target.closest('.task');
-                const pDiv = taskDiv.querySelector("#task-title-p")
+                const pDiv = taskDiv.querySelector("#task-title-p");
                 const taskName = pDiv.innerHTML;
-
+    
                 const projectName = document.getElementById("header-title").innerHTML;
+                let actualProjectName = projectName;
+    
+                if (projectName === 'today' || projectName === 'this week') {
+                    actualProjectName = taskDiv.getAttribute('data-project');
+                }
+    
                 if (!e.target.checked) {
                     pDiv.style.textDecoration = "none";
                     pDiv.style.color = "rgba(31, 29, 27, 1)";
-                    Storage.setTaskStatus(projectName, taskName, false);
+                    Storage.setTaskStatus(actualProjectName, taskName, false);
                 } else {
                     pDiv.style.textDecoration = "line-through";
                     pDiv.style.color = "rgba(31, 29, 27, 0.2)";
-                    Storage.setTaskStatus(projectName, taskName, true);
+                    Storage.setTaskStatus(actualProjectName, taskName, true);
                 }
             }
-
-        })
+        });
     }
+    
 
     static activeProject() {
         const projectList = document.getElementById("project-list");
@@ -311,6 +378,10 @@ export default class UI {
         taskDiv.classList.add('task');
         taskDiv.setAttribute('id', `${task.name}`);
     
+        if (projectName === 'today' || projectName === 'this week') {
+            taskDiv.setAttribute('data-project', task.project);
+        }
+    
         const taskInfoDiv = document.createElement('div');
         taskInfoDiv.setAttribute("id", "task-info");
     
@@ -347,13 +418,12 @@ export default class UI {
         taskRightBtn.setAttribute("type", "button");
         taskRightBtn.innerHTML = "Details";
     
-        // Conditionally create SVGs if the project is not 'today' or 'this week'
         let svgEdit, svgDelete;
         if (projectName !== 'today' && projectName !== 'this week') {
-            // Create the first SVG
             svgEdit = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             svgEdit.setAttribute("xmlns", "http://www.w3.org/2000/svg");
             svgEdit.setAttribute("viewBox", "0 0 24 24");
+            svgEdit.setAttribute('id', 'svg-edit-icon');
             const titleEdit = document.createElementNS("http://www.w3.org/2000/svg", "title");
             titleEdit.textContent = "file-document-edit-outline";
             const pathEdit = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -361,10 +431,10 @@ export default class UI {
             svgEdit.appendChild(titleEdit);
             svgEdit.appendChild(pathEdit);
     
-            // Create the second SVG
             svgDelete = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             svgDelete.setAttribute("xmlns", "http://www.w3.org/2000/svg");
             svgDelete.setAttribute("viewBox", "0 0 24 24");
+            svgDelete.setAttribute('id', 'svg-trash-icon')
             const titleDelete = document.createElementNS("http://www.w3.org/2000/svg", "title");
             titleDelete.textContent = "trash-can-outline";
             const pathDelete = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -389,32 +459,27 @@ export default class UI {
             taskDescriptionP.innerHTML = `${task.description}`;
         }
     
-        // Append to task left
         taskInfoLeft.appendChild(taskLeftInput);
         taskInfoLeft.appendChild(taskLeftP);
     
-        // Append to task right
         taskInfoRight.appendChild(taskRightDate);
         taskInfoRight.appendChild(taskRightBtn);
         if (svgEdit) taskInfoRight.appendChild(svgEdit);
         if (svgDelete) taskInfoRight.appendChild(svgDelete);
     
-        // Append to task description
         taskDescriptionDiv.appendChild(taskDescriptionBorder);
         taskDescriptionDiv.appendChild(taskDescriptionFrom);
         taskDescriptionDiv.appendChild(taskDescriptionP);
     
-        // Append to task info
         taskInfoDiv.appendChild(taskInfoLeft);
         taskInfoDiv.appendChild(taskInfoRight);
     
-        // Append to task
         taskDiv.appendChild(taskInfoDiv);
         taskDiv.appendChild(taskDescriptionDiv);
     
-        // Append to task list
         taskList.appendChild(taskDiv);
     }
+    
     
     
 }
