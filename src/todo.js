@@ -63,39 +63,37 @@ export class Todo {
     }
 
     updateTodayProject() {
-        this.getProjectByName("Today").list = []
+        this.getProjectByName("today").list = []
 
         this.projects.forEach((project) => {
-            if(project.name === 'Today' || project.name === 'This Week') {
+            if(project.name === 'today' || project.name === 'this week') {
                 return
             }
 
             const todaysTasks = project.getTodaysTasks();
 
             todaysTasks.forEach((task) => {
-                const taskName = `${task.name} (${project.name})`;
-                this.getProjectByName("Today").addTask(new Task(taskName, task.description, task.date, task.status))
+                this.getProjectByName("today").addTask(new Task(task.name, task.description, task.date, task.status, project.name))
             })
         })
     }
 
     updateWeekProject() {
-        this.getProjectByName("This Week").list = []
+        this.getProjectByName("this week").list = []
 
         this.projects.forEach((project) => {
-            if(project.name === 'Today' || project.name === 'This Week') {
+            if(project.name === 'today' || project.name === 'this week') {
                 return
             }
 
             const weeksTask = project.getThisWeeksTasks();
 
             weeksTask.forEach((task) => {
-                const taskName = `${task.name} (${project.name})`;
-                this.getProjectByName('This Week').addTask(new Task(taskName, task.description, task.date, task.status))
+                this.getProjectByName('this week').addTask(new Task(task.name, task.description, task.date, task.status, project.name))
             })
         })
 
-        this.getProjectByName("This Week").list = this.getProjectByName("This Week").list.sort((TaskA, TaskB) => {
+        this.getProjectByName("this week").list = this.getProjectByName("this week").list.sort((TaskA, TaskB) => {
             compareAsc(toDate(new Date(TaskA.date)), toDate(new Date(TaskB.date)))
         })
     }
