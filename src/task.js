@@ -3,11 +3,12 @@ import { format, formatDate, isDate, parseISO } from "date-fns";
 export class Task {
 
     //Constructor for task objects
-    constructor(name, description, date, status = false) {
+    constructor(name, description, date, status = false, project = '') {
         this._name = name;
         this._description = description;
         this._date = this.parseDate(date)
         this._status = status
+        this._project = project
     }
 
     //Getters
@@ -27,6 +28,10 @@ export class Task {
         return this._status;
     }
 
+    get project() {
+        return this._project;
+    }
+
     //Setters
     set name(name) {
         this._name = name;
@@ -42,6 +47,10 @@ export class Task {
 
     set status(status) {
         this._status = status;
+    }
+
+    set project(project) {
+        this._project = project;
     }
 
     parseDate(date) {
