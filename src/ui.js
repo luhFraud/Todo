@@ -379,6 +379,12 @@ export default class UI {
                     dateP.innerHTML = `${taskToEdit.getFormattedDate()}`;
                     const descriptionP = taskDiv.querySelector(".task-description-p");
                     descriptionP.innerHTML = newTaskDescription;
+
+                    const statusInput = taskDiv.querySelector("#status");
+                    statusInput.checked = false
+
+                    pDiv.style.textDecoration = "none";
+                    pDiv.style.color = "rgba(31, 29, 27, 1)";
     
                     // Update the ID of the taskDiv to match the new task title
                     taskDiv.id = newTaskTitle;
