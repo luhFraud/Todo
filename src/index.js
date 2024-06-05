@@ -1,4 +1,4 @@
-import './style.css'; // Ensure the path is correct
+import './style.css'; 
 import UI from "./ui";
 import { Todo } from "./todo";
 
