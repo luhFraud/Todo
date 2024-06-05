@@ -5,6 +5,6 @@ import '../dist/style.css'
 
 const todo = new Todo();
 
-console.log("i");
+console.log("style is linked");
 
 document.addEventListener("DOMContentLoaded", UI.loadPage)
