@@ -642,3 +642,107 @@ body {
     background-color: #FCFAF6;
     color: #1F1D1B;
 }
+
+/* Task edit section */
+
+#task-edit-section {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    z-index: 1;
+    width: 35%;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #1F1D1B;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #FCFAF6;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#task-edit-section-items {
+    width: 80%;
+}
+
+#edit-task-form-top {
+    display: flex;
+    flex-direction: row;
+}
+
+#edit-task-form-top input {
+    display: flex;
+    align-items: center;
+}
+
+#task-edit-form-error {
+    color: #EF0307;
+    text-align: center;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+}
+
+#edit-task-form-btns {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin: 0px 0px 25px 0px;
+    gap: 5px;
+}
+
+#edit-task-form-btns button {
+    width: 100%;
+    font-size: 16px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #1F1D1B;
+}
+
+#task-edit-btn {
+    background-color: #1F1D1B;
+    color: #FCFAF6;
+    cursor: pointer;
+}
+
+#task-edit-btn:hover {
+    background-color: #FCFAF6;
+    color: #1F1D1B;
+}
+
+#task-edit-cancel-btn {
+    background-color: #FCFAF6;
+    color: #1F1D1B;
+    cursor: pointer;
+}
+
+#task-edit-cancel-btn:hover {
+    background-color: #1F1D1B;
+    color: #FCFAF6;
+}
+
+#task-edit-title {
+    flex: 70%;
+    margin-right: 5px;
+    height: 32px;
+    padding: 4px 6px;
+    border-radius: 5px;
+    border: 1px solid #1F1D1B;
+    outline: none;
+}
+
+#task-edit-date-input {
+    flex: 30%;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+#task-edit-description {
+    width: 100%;
+    margin: 5px 0px;
+    padding: 10px 10px;
+    font-size: 15px;
+    font-family: "Poppins";
+}
