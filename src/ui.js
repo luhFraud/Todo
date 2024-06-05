@@ -78,6 +78,7 @@ export default class UI {
         UI.activeProject()
         UI.deleteProject()
         UI.deleteTask()
+        UI.editTask()
     }
 
     static projectForm() {
@@ -285,6 +286,78 @@ export default class UI {
             mainSection.style.filter = "none";
         });
     }
+
+    static editTask() {
+        const taskList = document.getElementById('task-list');
+    
+        const taskEditSection = document.getElementById("task-edit-section");
+        const mainSection = document.getElementById("main");
+    
+        const editTaskBtn = document.getElementById("task-edit-btn");
+        const cancelTaskBtn = document.getElementById("task-edit-cancel-btn");
+    
+        const taskEditFormError = document.getElementById("task-edit-form-error");
+    
+        const taskEditTitleInput = document.getElementById("task-edit-title");
+        const taskEditDateInput  = document.getElementById("task-edit-date-input");
+        const taskEditDescriptionInput = document.getElementById("task-edit-description");
+    
+        let taskToEdit = null;
+        let projectName = null;
+    
+        taskList.addEventListener('click', (e) => {
+            const target = e.target;
+            const svgEditIcon = target.closest('#svg-edit-icon');
+            if (svgEditIcon) {
+                const taskDiv = svgEditIcon.closest('.task'); 
+                const pDiv = taskDiv.querySelector("#task-title-p");
+                const taskName = pDiv.innerHTML;
+                projectName = document.getElementById("header-title").innerHTML;
+                taskToEdit = Storage.getTodo().getProjectByName(projectName).getTaskByName(taskName);
+    
+                // Set the form values
+                taskEditTitleInput.value = taskToEdit.name;
+    
+                const taskDate = new Date(taskToEdit.date);
+                if (!isNaN(taskDate)) {
+                    taskEditDateInput.value = taskDate.toISOString().substring(0, 10); // Convert date to YYYY-MM-DD format
+                } else {
+                    taskEditDateInput.value = ''; 
+                }
+    
+                taskEditDescriptionInput.value = taskToEdit.description;
+    
+                taskEditSection.style.display = 'flex';
+                mainSection.style.filter = "blur(1px)";
+            }
+        });
+    
+        cancelTaskBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            taskEditSection.style.display = 'none';
+            mainSection.style.filter = "blur(0px)";
+        });
+    
+        editTaskBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const newTaskTitle = taskEditTitleInput.value;
+            const newTaskDate = taskEditDateInput.value;
+            const newTaskDescription = taskEditDescriptionInput.value;
+    
+            const taskDiv = document.getElementById(taskToEdit.name)
+            console.log(taskToEdit)
+
+            taskToEdit.name = newTaskTitle;
+            taskToEdit.date = newTaskDate;
+            taskToEdit.description = newTaskDescription;
+            taskToEdit.status = false
+
+            console.log(taskToEdit);
+            console.log(Storage.getTodo());
+        });
+    }
+    
     
     
 
