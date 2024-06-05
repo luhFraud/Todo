@@ -9,8 +9,6 @@ export default class UI {
         UI.eventListeners()
         UI.generateProjects()
         UI.loadProjectContent('inbox')
-        //localStorage.clear()
-        console.log(Storage.getTodo())
     }
 
     //LOAD FUNCTIONS//
@@ -59,7 +57,6 @@ export default class UI {
     
         if (projectSettings.updateProject) {
             projectSettings.updateProject();
-            console.log(Storage.getTodo());
         }
     
         let tasks = Storage.getTodo().getProjectByName(projectName).list;
@@ -151,6 +148,7 @@ export default class UI {
             e.preventDefault()
             taskSection.style.display = 'none'
             mainSection.style.filter = "blur(0px)"
+            document.getElementById("new-task-form").reset();
             taskFormError.innerHTML = ''
        })
 
@@ -162,6 +160,11 @@ export default class UI {
 
             let taskNameInput = document.getElementById("task-title");
             let taskName = taskNameInput.value.toLowerCase().trim();
+
+            if(taskName === null || taskName === ''){
+                taskFormError.innerHTML = 'Task title can not be empty'
+                return
+            }
 
             let taskDateInput = document.getElementById("task-date-input")
             let taskDate = taskDateInput.value;
@@ -315,20 +318,24 @@ export default class UI {
                 projectName = document.getElementById("header-title").innerHTML;
                 taskToEdit = Storage.getTodo().getProjectByName(projectName).getTaskByName(taskName);
     
-                // Set the form values
-                taskEditTitleInput.value = taskToEdit.name;
+                if (taskToEdit) {
+                    // Set the form values
+                    taskEditTitleInput.value = taskToEdit.name;
     
-                const taskDate = new Date(taskToEdit.date);
-                if (!isNaN(taskDate)) {
-                    taskEditDateInput.value = taskDate.toISOString().substring(0, 10); // Convert date to YYYY-MM-DD format
+                    const taskDate = new Date(taskToEdit.date);
+                    if (!isNaN(taskDate)) {
+                        taskEditDateInput.value = taskDate.toISOString().substring(0, 10); // Convert date to YYYY-MM-DD format
+                    } else {
+                        taskEditDateInput.value = ''; 
+                    }
+    
+                    taskEditDescriptionInput.value = taskToEdit.description;
+    
+                    taskEditSection.style.display = 'flex';
+                    mainSection.style.filter = "blur(1px)";
                 } else {
-                    taskEditDateInput.value = ''; 
+                    console.error(`Task ${taskName} not found in project ${projectName}`);
                 }
-    
-                taskEditDescriptionInput.value = taskToEdit.description;
-    
-                taskEditSection.style.display = 'flex';
-                mainSection.style.filter = "blur(1px)";
             }
         });
     
@@ -336,27 +343,57 @@ export default class UI {
             e.preventDefault();
             taskEditSection.style.display = 'none';
             mainSection.style.filter = "blur(0px)";
+            taskEditFormError.innerHTML = '';
         });
     
         editTaskBtn.addEventListener('click', function(e) {
             e.preventDefault();
-
-            const newTaskTitle = taskEditTitleInput.value;
-            const newTaskDate = taskEditDateInput.value;
-            const newTaskDescription = taskEditDescriptionInput.value;
     
-            const taskDiv = document.getElementById(taskToEdit.name)
-            console.log(taskToEdit)
-
-            taskToEdit.name = newTaskTitle;
-            taskToEdit.date = newTaskDate;
-            taskToEdit.description = newTaskDescription;
-            taskToEdit.status = false
-
-            console.log(taskToEdit);
-            console.log(Storage.getTodo());
+            if (taskEditTitleInput.value === null || taskEditTitleInput.value === '') {
+                taskEditFormError.innerHTML = 'Task Title cannot be empty';
+                return;
+            }
+    
+            if (taskToEdit && projectName) {
+                const oldTaskName = taskToEdit.name;
+                const newTaskTitle = taskEditTitleInput.value;
+                const newTaskDate = taskEditDateInput.value;
+                const newTaskDescription = taskEditDescriptionInput.value;
+    
+                // Update the task properties locally
+                taskToEdit.name = newTaskTitle;
+                taskToEdit.date = newTaskDate;
+                taskToEdit.description = newTaskDescription;
+    
+                // Save the updated task back to storage
+                Storage.setTaskName(projectName, oldTaskName, newTaskTitle);
+                Storage.setTaskDescription(projectName, newTaskTitle, newTaskDescription);
+                Storage.setTaskDate(projectName, newTaskTitle, newTaskDate);
+                Storage.setTaskStatus(projectName, newTaskTitle, false);
+    
+                const taskDiv = document.getElementById(oldTaskName);
+                if (taskDiv) {
+                    const pDiv = taskDiv.querySelector("#task-title-p");
+                    pDiv.innerHTML = newTaskTitle;
+                    const dateP = taskDiv.querySelector("#task-date");
+                    dateP.innerHTML = `${taskToEdit.getFormattedDate()}`;
+                    const descriptionP = taskDiv.querySelector(".task-description-p");
+                    descriptionP.innerHTML = newTaskDescription;
+    
+                    // Update the ID of the taskDiv to match the new task title
+                    taskDiv.id = newTaskTitle;
+                }
+    
+                taskEditSection.style.display = 'none';
+                mainSection.style.filter = "blur(0px)";
+            } else {
+                taskEditFormError.innerHTML = 'Error: Task to edit not found.';
+            }
         });
     }
+    
+    
+    
     
     
     
@@ -522,6 +559,7 @@ export default class UI {
         const taskDescriptionBorder = document.createElement('div');
     
         const taskDescriptionP = document.createElement("p");
+        taskDescriptionP.classList.add('task-description-p')
         const taskDescriptionFrom = document.createElement("p");
         taskDescriptionFrom.classList.add('task-from-description');
     
